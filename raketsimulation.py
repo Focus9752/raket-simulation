@@ -7,6 +7,9 @@ def simulate():
     tList = []
     yList = []
 
+    dt = float(input("Angiv tidsskridtsstørrelsen i s: "))
+    simulatedTime = int(input("Angiv simuleret tid i s: "))
+
     # Fm = float(input("Angiv motorkraften i N: "))
     Fm = 6
     #m_tom = float(input("Angiv rakettens masse uden brændstof i kg: "))
@@ -18,27 +21,28 @@ def simulate():
     m = m_tom + m_brænd
     R = m_brænd / t_brænd
     g = -9.82
-    A = 0.000962
-    cw = 0.5
-    rho_luft = 1.225
-    k = 0.5 * A * cw * rho_luft
+    k1 = 0.5 * 0.000962 * 0.5 * 1.225
+    k2 = 0.5 * 0.1257 * 0.8 * 1.225
+    k = k1
+    
     #v = float(input("Angiv begyndelsesfarten i m/s: "))
     #y = float(input("Angiv begyndelseshøjden i m: "))
     #t = float(input("Angiv starttid i s: "))
     v, y, t = 0, 0, 0
-    dt = float(input("Angiv tidsskridtsstørrelsen i s: "))
-
-    simulatedTime = int(input("Angiv simuleret tid i s: "))
+    
 
     while(True):
         if t >= t_brænd:
             m = m_tom
             Fm = 0
+            if k < k2:
+                #Antager at faldskærmen åbner sig på 3s
+                k += (k2 - k1) * dt / 3
+            if k >= k2:
+                k = k2
         dm = R * dt
         m = m - dm
         Ft = m * g
-        if v < 0:
-            k = 0.5 * 0.1257 * 0.8 * 1.225
         Fres = Fm + Ft - math.sin(v) * k * v**2
         a = Fres / m
         v = v + a * dt
