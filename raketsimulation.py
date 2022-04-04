@@ -63,7 +63,7 @@ simulate()
 
 #Med motortype A
 
-#Fm =6 N
+#Fm = 6 N
 #t_brænd = 0.6 s
 
 #Raket masse tom omkring 0.09138 kg
