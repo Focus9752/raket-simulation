@@ -49,7 +49,7 @@ def simulate():
             #Sæt motorkraft til 0 N
             Fm = 0
             #"Udløs faldskærmen" når raketten begynder at falde nedad
-            if rocketType == "a" and t >= 4.8:
+            if rocketType == "a" and t >= 2.71:
                 k = k2
             elif rocketType == "b" and t >= 5.5:
                 k = k2
