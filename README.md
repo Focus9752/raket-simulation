@@ -4,7 +4,7 @@
 
 Dette program kræver, at du har installeret python 3.x og pip (eller en anden package-manager) på din computer, før du kører programmet. Hvis du ikke allerede har Python installeret kan det findes på [python.org](https://www.python.org/).
 
-Desuden forventes det at du har en package-manager. Hvis du ikke har en package manager installeret kan du installere PIP ved at køre kommandoen "py -m ensurepip --upgrade" i din terminal.
+Desuden forventes det at du har en package-manager. Hvis du ikke har en package manager installeret kan du installere pip ved at køre kommandoen "py -m ensurepip --upgrade" i din terminal.
 
 På windows åbnes terminalen ved at skrive "cmd" i søgefeltet eller ved at trykke "WIN + X", hvilket åbner en menu hvor du kan køre terminalen. 
 
