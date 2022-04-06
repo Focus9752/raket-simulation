@@ -9,16 +9,20 @@ def simulate():
     vList = []
     aList = []
 
+    rocketType = "a"
+
     if input("Vælg rakettype (a/b): ").lower() == "a":
         m_tom = 0.090
         m_brænd = 0.00656
         Fm = 6
-        t_brænd = 0.6
+        t_brænd = 0.4
+        rocketType = "a"
     else:
         m_tom = 0.090
         m_brænd = 0.00798
         Fm = 4
-        t_brænd = 1.3
+        t_brænd = 1.1
+        rocketType = "b"
 
     dt = float(input("Angiv tidsskridtsstørrelsen i s: "))
     
@@ -29,11 +33,9 @@ def simulate():
     #k1 er rakettens luftmodstandsfaktor før faldskærmen er udfoldet
     k1 = 0.5 * 0.0008294 * 0.04 * 1.225
     #k2 er rakettens luftmodstandsfaktor når faldskærmen er udfoldet
-    k2 = 0.5 * 0.1257 * 2.2 * 1.225
+    k2 = 0.5 * 0.08 * 0.5 * 1.225
     k = k1
     v, y, t = 0, 0, 0
-
-    #3,25cm
 
     while(True):
         #Beregn ændringen i masse
@@ -46,7 +48,9 @@ def simulate():
             #Sæt motorkraft til 0 N
             Fm = 0
             #"Udløs faldskærmen" når raketten begynder at falde nedad
-            if v > 0:
+            if rocketType == "a" and t >= 4.8:
+                k = k2
+            elif rocketType == "b" and t >= 5.5:
                 k = k2
         #Tyngdekraften
         Ft = m * g
