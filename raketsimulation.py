@@ -1,4 +1,5 @@
 from numpy import number
+import pandas
 import math
 import matplotlib.pyplot as plt
 import sys
@@ -97,7 +98,17 @@ def simulate():
     plt.title("Rakettens højde")
     plt.show()
 
+    #Skriv data til excelfil
+    df = pandas.DataFrame([tList,yList,vList,aList]).T
+    df.columns = ["t / s", "y / m", "v / m/s", "a / m/s^2"]
+    if rocketType == "a":
+        df.to_excel(excel_writer = "RaketA.xlsx")
+    else:
+        df.to_excel(excel_writer = "RaketB.xlsx")
+
     sys.exit()
+
+    
 
 simulate()
 
