@@ -82,14 +82,12 @@ def simulate():
     plt.xlabel("t / s")
     plt.ylabel("acceleration / m/s^2")
     plt.title("Rakettens acceleration")
-    #plt.show()
 
     plot2 = plt.figure(2)
     plt.plot(tList,vList)
     plt.xlabel("t / s")
     plt.ylabel("hastighed / m/s")
     plt.title("Rakettens hastighed")
-    #plt.show()
 
     plot3 = plt.figure(3)
     plt.plot(tList,yList)
