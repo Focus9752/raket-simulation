@@ -9,47 +9,44 @@ def simulate():
 
     dt = float(input("Angiv tidsskridtsstørrelsen i s: "))
     simulatedTime = int(input("Angiv simuleret tid i s: "))
-
-    # Fm = float(input("Angiv motorkraften i N: "))
+    
     Fm = 6
-    #m_tom = float(input("Angiv rakettens masse uden brændstof i kg: "))
     m_tom = 0.09138
-    #m_brænd = float(input("Angiv massen af rakettens brændstof i kg: "))
     m_brænd = 0.00798
-    #t_brænd = float(input("Angiv brændselstiden i s: "))
-    t_brænd = 0.6
     m = m_tom + m_brænd
+    t_brænd = 0.6
+    #R er raten hvormed raketten taber masse når motoren brænder
     R = m_brænd / t_brænd
     g = -9.82
+    #k1 er rakettens luftmodstandsfaktor før faldskærmen er udfoldet
     k1 = 0.5 * 0.000962 * 0.5 * 1.225
+    #k2 er rakettens luftmodstandsfaktor når faldskærmen er udfoldet
     k2 = 0.5 * 0.1257 * 0.8 * 1.225
     k = k1
-    
-    #v = float(input("Angiv begyndelsesfarten i m/s: "))
-    #y = float(input("Angiv begyndelseshøjden i m: "))
-    #t = float(input("Angiv starttid i s: "))
     v, y, t = 0, 0, 0
-    
 
     while(True):
+        dm = R * dt
+        m = m - dm
         if t >= t_brænd:
             m = m_tom
             Fm = 0
-            if k < k2:
-                #Antager at faldskærmen åbner sig på 3s
-                k += (k2 - k1) * dt / 3
-            if k >= k2:
+            if v > 0:
                 k = k2
-        dm = R * dt
-        m = m - dm
         Ft = m * g
-        Fres = Fm + Ft - math.sin(v) * k * v**2
+        Fres = Fm + Ft
+        if v >= 0:
+            Fres -= k * v**2
+        else:
+            Fres += k * v**2
         a = Fres / m
         v = v + a * dt
         y = y + v * dt
         t = t + dt
         tList.append(t)
         yList.append(y)
+        if 17.78 <= v <= 19.55:
+            pass
         print("t = % .2f s, v = % .2f m/s, y = % .2f m" % (t, v, y))
         if y <= 0: break
         if t >= simulatedTime: break
@@ -65,12 +62,20 @@ def simulate():
 
 simulate()
 
-#Med motortype A
+#Motortype A
 
 #Fm = 6 N
 #t_brænd = 0.6 s
 
 #Raket masse tom omkring 0.09138 kg
 #Masse af brændstof 0.00798 kg
+
+#Motortype B
+
+#Fm = 4 N
+#t_brænd = 1.3 s
+
+#Raket masse tom omkring 0.09138 kg
+#Masse af hel motor 0.01819 kg
 
 
