@@ -6,35 +6,53 @@ import sys
 def simulate():
     tList = []
     yList = []
+    vList = []
+    aList = []
+
+    if input("Vælg rakettype (a/b): ").lower() == "a":
+        m_tom = 0.090
+        m_brænd = 0.00656
+        Fm = 6
+        t_brænd = 0.6
+    else:
+        m_tom = 0.090
+        m_brænd = 0.00798
+        Fm = 4
+        t_brænd = 1.3
 
     dt = float(input("Angiv tidsskridtsstørrelsen i s: "))
-    simulatedTime = int(input("Angiv simuleret tid i s: "))
     
-    Fm = 6
-    m_tom = 0.09138
-    m_brænd = 0.00798
     m = m_tom + m_brænd
-    t_brænd = 0.6
     #R er raten hvormed raketten taber masse når motoren brænder
     R = m_brænd / t_brænd
     g = -9.82
     #k1 er rakettens luftmodstandsfaktor før faldskærmen er udfoldet
-    k1 = 0.5 * 0.000962 * 0.5 * 1.225
+    k1 = 0.5 * 0.0008294 * 0.04 * 1.225
     #k2 er rakettens luftmodstandsfaktor når faldskærmen er udfoldet
-    k2 = 0.5 * 0.1257 * 0.8 * 1.225
+    k2 = 0.5 * 0.1257 * 2.2 * 1.225
     k = k1
     v, y, t = 0, 0, 0
 
+    #3,25cm
+
     while(True):
+        #Beregn ændringen i masse
         dm = R * dt
         m = m - dm
+        #Hvis motoren er færdig med at brænde
         if t >= t_brænd:
+            #Sæt masse til masse af tom raket
             m = m_tom
+            #Sæt motorkraft til 0 N
             Fm = 0
+            #"Udløs faldskærmen" når raketten begynder at falde nedad
             if v > 0:
                 k = k2
+        #Tyngdekraften
         Ft = m * g
+        #Resulterende kraft
         Fres = Fm + Ft
+        #Læg luftmodstand til resulterende kraft - men tjek fortegn
         if v >= 0:
             Fres -= k * v**2
         else:
@@ -42,20 +60,37 @@ def simulate():
         a = Fres / m
         v = v + a * dt
         y = y + v * dt
-        t = t + dt
+        t = t + dt 
+        #Stop simulationen når raketten rammer jorden        
+        if y < 0: break
+        #Vis værdierne i konsollen
+        print("t = % .2f s, v = % .2f m/s, y = % .2f m" % (t, v, y))
+        #Gem værdierne i nogle lister
         tList.append(t)
         yList.append(y)
-        if 17.78 <= v <= 19.55:
-            pass
-        print("t = % .2f s, v = % .2f m/s, y = % .2f m" % (t, v, y))
-        if y <= 0: break
-        if t >= simulatedTime: break
-            
+        vList.append(v)
+        aList.append(a)
+
     
+    plot1 = plt.figure(1)
+    plt.plot(tList,aList)
+    plt.xlabel("t / s")
+    plt.ylabel("acceleration / m/s^2")
+    plt.title("Rakettens acceleration")
+    #plt.show()
+
+    plot2 = plt.figure(2)
+    plt.plot(tList,vList)
+    plt.xlabel("t / s")
+    plt.ylabel("hastighed / m/s")
+    plt.title("Rakettens hastighed")
+    #plt.show()
+
+    plot3 = plt.figure(3)
     plt.plot(tList,yList)
     plt.xlabel("t / s")
     plt.ylabel("højde / m")
-    plt.title("Simulering af raket")
+    plt.title("Rakettens højde")
     plt.show()
 
     sys.exit()
@@ -64,18 +99,17 @@ simulate()
 
 #Motortype A
 
-#Fm = 6 N
-#t_brænd = 0.6 s
-
-#Raket masse tom omkring 0.09138 kg
-#Masse af brændstof 0.00798 kg
-
-#Motortype B
-
 #Fm = 4 N
 #t_brænd = 1.3 s
 
-#Raket masse tom omkring 0.09138 kg
-#Masse af hel motor 0.01819 kg
+#Raket masse tom omkring 0.09126 kg
+#Masse af brændstof 0.006562 kg
 
+#Motortype B
+
+#Fm = 6 N
+#t_brænd = 0.6 s
+
+#Raket masse tom omkring 0.09060 kg
+#Masse af brændstof 0.00798 kg
 
